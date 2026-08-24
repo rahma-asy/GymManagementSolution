@@ -48,13 +48,14 @@ namespace GymManagement.DAL.Repositories.classes
         
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync(bool tracking, CancellationToken c=default)
+        public async Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>>? predicate = null, bool tracking = false, CancellationToken ct = default)
         {
             IQueryable<TEntity> query = tracking ? _set : _set.AsNoTracking();
-            return await query.ToListAsync();
+            if (predicate is not null) query = query.Where(predicate);
+            return await query.ToListAsync(ct);
         }
 
-       public Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken c=default)
+        public Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken c=default)
         {
             return _set.AsNoTracking().AnyAsync(predicate, c);  
         }

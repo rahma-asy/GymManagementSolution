@@ -11,15 +11,20 @@ namespace GymManagement.DAL.Repositories.classes
 {
     public class UnitOfWork : IUnitOfWork
     {
+        private readonly Dictionary<string, object> repositories = [];
         private readonly GymDbContext _dbContext;
-        private readonly Dictionary<string, object> _repositories = [];
-        public UnitOfWork(GymDbContext dbContext, ISessionReposatory sessionReposatory)
+        public IMembershipRepository MembershipRepository { get; }
+        public ISessionReposatory SessionRepository { get; }
+        public IBookingRepository BookingRepository { get; }
+
+        
+        public UnitOfWork(GymDbContext dbContext,IMembershipRepository membershipRepository,ISessionReposatory sessionRepository,IBookingRepository bookingRepository)
         {
             _dbContext = dbContext;
-            SessionReposatory = sessionReposatory;
+            MembershipRepository = membershipRepository;
+            SessionRepository = sessionRepository;
+            BookingRepository = bookingRepository;
         }
-
-        public ISessionReposatory SessionReposatory {  get; }
 
         public IGenaricReposatory<TEntity> GetRepository<TEntity>()where TEntity : BaseEntity, new()
         {
@@ -27,13 +32,13 @@ namespace GymManagement.DAL.Repositories.classes
             var typeName = typeof(TEntity).Name;
 
             // If Exists -> Return
-            if (_repositories.TryGetValue(typeName, out object? value))
+            if (repositories.TryGetValue(typeName, out object? value))
                 return (IGenaricReposatory<TEntity>)value;
             else
             {
                 // If Not -> Create - Store - Return
                 var repo = new GenaricRepository<TEntity>(_dbContext);
-                _repositories[typeName] = repo;
+                repositories[typeName] = repo;
 
                 return repo;
             }

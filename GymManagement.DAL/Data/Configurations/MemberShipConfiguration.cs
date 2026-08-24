@@ -1,3 +1,4 @@
+using GymManagement.DAL.Data.Configurations;
 using GymManagement.DAL.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -16,6 +17,15 @@ namespace GymManagement.DAL.Data.Configurations
         {
            builder.HasKey(x => x.Id);
             builder.Property(x => x.CreatedAt).HasColumnName("StartDate").HasDefaultValueSql("GETDATE()");
+
+
+            builder.HasOne(m => m.Plan).WithMany(p => p.PlanMembers)
+                          .HasForeignKey(m => m.PlanId)
+                          .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(m => m.Member).WithMany(me => me.MemberShips)
+                         .HasForeignKey(m => m.MemberId)
+                         .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

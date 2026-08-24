@@ -28,7 +28,7 @@ namespace GymManagement.BLL.Services.Classes
         #region Index
         public async Task<IEnumerable<PlanViewModel>> GetAllPlansAsync(CancellationToken c = default)
         {
-            var plans = await _unitOfWork.GetRepository<Plan>().GetAllAsync(c: c);
+            var plans = await _unitOfWork.GetRepository<Plan>().GetAllAsync(ct: c);
 
             if (!plans.Any()) return [];
             var plansViewModel =_mapper.Map<IEnumerable<PlanViewModel>>(plans);

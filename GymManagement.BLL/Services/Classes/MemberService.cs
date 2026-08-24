@@ -35,7 +35,7 @@ namespace GymManagement.BLL.Services.Classes
         #region index view
         public async Task<IEnumerable<MemberViewModel>> GetAllMemberAsync(CancellationToken c = default)
         {
-            var members = await _unitOfWork.GetRepository<Member>().GetAllAsync(c: c);
+            var members = await _unitOfWork.GetRepository<Member>().GetAllAsync(ct: c);
 
             if (!members.Any()) return [];
             var membersViewModel = _mapper.Map< IEnumerable<Member>,IEnumerable<MemberViewModel>>(members);

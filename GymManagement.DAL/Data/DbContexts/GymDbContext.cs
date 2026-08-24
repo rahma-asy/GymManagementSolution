@@ -31,6 +31,7 @@ namespace GymManagement.DAL.Data.DbContexts
 
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<MemberShip> MemberShips { get; set; }
+
         //public DbSet<ApplicaionUser> Users { get; set; }// instead of <IdentityUsers>
 
         //public DbSet<IdentityRole> Roles { get; set; }

@@ -32,6 +32,8 @@ namespace GymManagement
             builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
             builder.Services.AddScoped<ISessionReposatory, SessionReposatory>();
             builder.Services.AddScoped<ISessionService, SessionService>();
+            builder.Services.AddScoped<IMembershipService, MembershipService>();
+            builder.Services.AddScoped<IBookingService, BookingService>();
             builder.Services.AddScoped<IAttachmentService, AttachmentService>();
             builder.Services.AddScoped<IDashboardService, DashboardService>();
             builder.Services.AddAutoMapper(m => m.AddProfile(new MappingProfile()));//MappingProfile عشان يعرف هيحول ازاي هيروح يدور في  
