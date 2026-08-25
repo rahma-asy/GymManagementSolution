@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace GymManagement.DAL.Repositories.classes
 {
-    public class MembershipRepository : GenaricRepository<MemberShip>, IMembershipRepository
+    public class MembershipRepository : GenaricRepository<Membership>, IMembershipRepository
     {
         private readonly GymDbContext _dbContext;
 
@@ -20,10 +20,10 @@ namespace GymManagement.DAL.Repositories.classes
             _dbContext = dbContext;
         }
 
-        public async Task<List<MemberShip>> GetAllMembershipsWithMemberAndPlanAsync(Expression<Func<MemberShip, bool>>? predicate = null,
+        public async Task<List<Membership>> GetAllMembershipsWithMemberAndPlanAsync(Expression<Func<Membership, bool>>? predicate = null,
            CancellationToken ct = default)
         {
-             IQueryable<MemberShip> query = _dbContext.MemberShips.AsNoTracking().Include(m => m.Plan).Include(m => m.Member);
+             IQueryable<Membership> query = _dbContext.MemberShips.AsNoTracking().Include(m => m.Plan).Include(m => m.Member);
 
             if (predicate is not null) query = query.Where(predicate);
 

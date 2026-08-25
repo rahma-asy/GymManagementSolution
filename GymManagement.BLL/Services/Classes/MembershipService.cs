@@ -28,7 +28,7 @@ namespace GymManagement.BLL.Services.Classes
                 .AnyAsync(m => m.MemberId == model.MemberId && m.EndDate > DateTime.Now, ct);
             if (hasActive) return Result.Fail("Member already has an active membership.");
 
-            var entity = new MemberShip
+            var entity = new Membership
             {
                 MemberId = model.MemberId,
                 PlanId = plan.Id,

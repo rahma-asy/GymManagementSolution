@@ -61,26 +61,82 @@ namespace GymManagement.BLL.Services.Classes
             if (model == null) return null;
             else
                 return _mapper.Map<TrainerToUpdateViewModel>(model);
-            }    
-   
-        public async Task<bool> UpdateTrainerDetailsAsync(int id, TrainerToUpdateViewModel model, CancellationToken c = default)
+            }
+
+        //public async Task<bool> UpdateTrainerDetailsAsync(int id,TrainerToUpdateViewModel model,CancellationToken c = default)
+        //{
+        //    var trainer = await _unitOfWork
+        //        .GetRepository<Trainer>()
+        //        .GetByIDAsync(id, c);
+
+        //    if (trainer == null)
+        //        return false;
+
+        //    var emailExists = await _unitOfWork
+        //        .GetRepository<Trainer>()
+        //        .AnyAsync(m => m.Email == model.Email && m.Id != id, c);
+
+        //    var phoneExists = await _unitOfWork
+        //        .GetRepository<Trainer>()
+        //        .AnyAsync(m => m.Phone == model.Phone && m.Id != id, c);
+
+        //    if (emailExists || phoneExists)
+        //        return false;
+
+        //    // Update the existing entity
+        //    _mapper.Map(model, trainer);
+
+        //    trainer.UpdatedAt = DateTime.Now;
+
+        //    _unitOfWork.GetRepository<Trainer>().Update(trainer);
+
+        //    var result = await _unitOfWork.SaveChangesAsync(c);
+
+        //    return result > 0;
+        //}
+        public async Task<bool> UpdateTrainerDetailsAsync(
+    int id,
+    TrainerToUpdateViewModel model,
+    CancellationToken c = default)
         {
-            var trainer = await _unitOfWork.GetRepository<Trainer>().GetByIDAsync(id, c);
-            if (trainer == null) return false;
+            var trainer = await _unitOfWork
+                .GetRepository<Trainer>()
+                .GetByIDAsync(id, c);
 
-            var emailExists = await _unitOfWork.GetRepository<Trainer>().AnyAsync(m => m.Email == model.Email && m.Id != id, c);
-            var phoneExists = await _unitOfWork.GetRepository<Trainer>().AnyAsync(m => m.Phone == model.Phone && m.Id != id, c);
-          //  if (model.Email == trainer.Email) return false; لو عايز اتاكد انه هيغير الايميل فعل امش هيعمل تحديث علي نفس الداتا
-            if (emailExists || phoneExists) return false;
+            if (trainer == null)
+                return false;
 
-          _mapper.Map<Trainer>(model);
+            var emailExists = await _unitOfWork
+                .GetRepository<Trainer>()
+                .AnyAsync(m => m.Email == model.Email && m.Id != id, c);
+
+            var phoneExists = await _unitOfWork
+                .GetRepository<Trainer>()
+                .AnyAsync(m => m.Phone == model.Phone && m.Id != id, c);
+
+            if (emailExists || phoneExists)
+                return false;
+
+            // قبل الـ Map
+            Console.WriteLine($"OLD EMAIL: {trainer.Email}");
+            Console.WriteLine($"NEW EMAIL: {model.Email}");
+
+            _mapper.Map(model, trainer);
+
+            // بعد الـ Map
+            Console.WriteLine($"AFTER MAP EMAIL: {trainer.Email}");
+
             trainer.UpdatedAt = DateTime.Now;
+
             _unitOfWork.GetRepository<Trainer>().Update(trainer);
+
             var result = await _unitOfWork.SaveChangesAsync(c);
+
+            Console.WriteLine($"SAVE RESULT: {result}");
+
             return result > 0;
         }
 
-        
         public async Task<bool> RemoveTrainerAsync(int id, CancellationToken c = default)
         {
             {

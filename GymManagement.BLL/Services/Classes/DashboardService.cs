@@ -30,7 +30,7 @@ namespace GymManagement.BLL.Services.Classes
             {
                 TotalMembers = await _unitOfWork.GetRepository<Member>().CountAsync(ct:c),
 
-                ActiveMembers = await _unitOfWork.GetRepository<MemberShip>().CountAsync(m => m.EndDate>now),
+                ActiveMembers = await _unitOfWork.GetRepository<Membership>().CountAsync(m => m.EndDate>now),
                 TotalTrainers = await _unitOfWork.GetRepository<Trainer>().CountAsync(ct: c),
 
                 UpcomingSessions = await _unitOfWork.GetRepository<Session>().CountAsync(s => s.StartDate > now, c),

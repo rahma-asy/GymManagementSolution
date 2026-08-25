@@ -11,9 +11,9 @@ using System.Threading.Tasks;
 namespace GymManagement.DAL.Data.Configurations
 {
 
-    internal class MemberShipConfiguration : IEntityTypeConfiguration<MemberShip>
+    internal class MembershipConfiguration : IEntityTypeConfiguration<Membership>
     {
-        public void Configure(EntityTypeBuilder<MemberShip> builder)
+        public void Configure(EntityTypeBuilder<Membership> builder)
         {
            builder.HasKey(x => x.Id);
             builder.Property(x => x.CreatedAt).HasColumnName("StartDate").HasDefaultValueSql("GETDATE()");

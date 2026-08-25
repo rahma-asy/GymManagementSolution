@@ -78,7 +78,7 @@ namespace GymManagement.BLL.Services.Classes
             var member = await _unitOfWork.GetRepository<Member>().GetByIDAsync(id, c);
             if (member == null) return null; //من الاول كدا
             var model =_mapper.Map<Member,MemberViewModel>(member);
-            var activeMembership = await _unitOfWork.GetRepository<MemberShip>().FirstOrDefultAsync(x => x.Id == id && x.EndDate > DateTime.Now);
+            var activeMembership = await _unitOfWork.GetRepository<Membership>().FirstOrDefultAsync(x => x.Id == id && x.EndDate > DateTime.Now);
             if (activeMembership is not null)
             {
                 var activePlan = await _unitOfWork.GetRepository<Plan>().GetByIDAsync(activeMembership.PlanId, c); //relationshiopهجيب البلان اللي فال

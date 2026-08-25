@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 
 namespace GymManagement.DAL.Repositories.interfaces
 {
-    public interface IMembershipRepository : IGenaricReposatory<MemberShip>
+    public interface IMembershipRepository : IGenaricReposatory<Membership>
     {
-        Task<List<MemberShip>> GetAllMembershipsWithMemberAndPlanAsync(Expression<Func<MemberShip, bool>>? predicate = null, CancellationToken ct = default);
+        Task<List<Membership>> GetAllMembershipsWithMemberAndPlanAsync(Expression<Func<Membership, bool>>? predicate = null, CancellationToken ct = default);
     }
 }

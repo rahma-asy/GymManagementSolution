@@ -54,7 +54,7 @@ namespace GymManagement.BLL.Services.Classes
         {
             var plan = await _unitOfWork.GetRepository<Plan>().GetByIDAsync(planId, c);
             if (plan == null || !plan.IsActive) return null; //من الاول كدا
-            var hasActiveMembership = await _unitOfWork.GetRepository<MemberShip>().AnyAsync(p => p.PlanId == planId && p.EndDate > DateTime.Now,c);
+            var hasActiveMembership = await _unitOfWork.GetRepository<Membership>().AnyAsync(p => p.PlanId == planId && p.EndDate > DateTime.Now,c);
             if (hasActiveMembership) return null;
             else
                 return _mapper.Map<UpdatePlanViewModel>(plan);
@@ -64,7 +64,7 @@ namespace GymManagement.BLL.Services.Classes
         {
             var plan = await _unitOfWork.GetRepository<Plan>().GetByIDAsync(planId, c);
             if (plan == null) return false;
-            var hasActiveMembership = await _unitOfWork.GetRepository<MemberShip>().AnyAsync(p => p.PlanId == planId && p.EndDate > DateTime.Now, c);
+            var hasActiveMembership = await _unitOfWork.GetRepository<Membership>().AnyAsync(p => p.PlanId == planId && p.EndDate > DateTime.Now, c);
             if (hasActiveMembership) return false;
 
            _mapper.Map(model,plan);
@@ -80,7 +80,7 @@ namespace GymManagement.BLL.Services.Classes
         public async Task<bool> ToggleActivationAsync(int planId, CancellationToken c = default)
         {
             var plan = await _unitOfWork.GetRepository<Plan>().GetByIDAsync(planId, c);
-            var hasActiveMembership = await _unitOfWork.GetRepository<MemberShip>().AnyAsync(p => p.PlanId == planId && p.EndDate > DateTime.Now, c);
+            var hasActiveMembership = await _unitOfWork.GetRepository<Membership>().AnyAsync(p => p.PlanId == planId && p.EndDate > DateTime.Now, c);
             if (plan == null) return false;
            if(plan.IsActive && hasActiveMembership) return false;
          

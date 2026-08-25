@@ -71,12 +71,19 @@ namespace GymManagement.PL.Controllers
             if (!ModelState.IsValid) return View(model);
             var result = await _trainerService.UpdateTrainerDetailsAsync(id, model, c);
             if (result)
-                TempData["successMessage"] = "Trainer Updated Successfully";
+{                TempData["successMessage"] = "Trainer Updated Successfully";
+             
+            }
             else
                 TempData["ErrorMessage"] = "Failed to Updated Trainer";
-
             return RedirectToAction(nameof(Index));
+            //  return View(model);
         }
+
+
+
+
+
 
 
         [HttpGet]

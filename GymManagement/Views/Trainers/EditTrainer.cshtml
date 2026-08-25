@@ -17,7 +17,9 @@
                         <small class="text-muted d-block mb-1">Editing Profile For</small>
                         <h4 class="mb-0 text-black">@Model.Name</h4>
                     </div>
-                    <form asp-action="EditTrainer" method="post">
+                    <form asp-action="EditTrainer"
+                          asp-route-id="@ViewContext.RouteData.Values["id"]"
+                          method="post">
                         <input hidden asp-for="Name" />
                         <!-- Personal Information -->
                         <div class="section-header mb-3">
@@ -74,11 +76,11 @@
                         <div class="row g-3">
 
                             <div class="col-12 col-md-6">
-                                <label asp-for="Specialty" class="form-label"></label>
-                                <select asp-for="Specialty" asp-items="Html.GetEnumSelectList<Specialties>()" class="form-select">
+                                <label asp-for="Spectatty" class="form-label"></label>
+                                <select asp-for="Spectatty" asp-items="Html.GetEnumSelectList<Specialties>()" class="form-select">
                                     <option value="">-- Select Specialist --</option>
                                 </select>
-                                <span asp-validation-for="Specialty" class="text-danger"></span>
+                                <span asp-validation-for="Spectatty" class="text-danger"></span>
                             </div>
                         </div>
 

@@ -41,6 +41,6 @@ namespace GymManagement.BLL.ViewModels.TrainerViewModels
 
      
         [Required(ErrorMessage = "Please select a specialty.")]
-        public Specialties Specialty { get; set; }
+        public Specialties Spectatty { get; set; }
     }
 }

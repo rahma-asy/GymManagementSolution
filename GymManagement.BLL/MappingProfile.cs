@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.Execution;
 using GymManagement.BLL;
+using GymManagement.BLL.ViewModels.MembershipViewModels;
 using GymManagement.BLL.ViewModels.MemberViewModels;
 using GymManagement.BLL.ViewModels.PlanVewModels;
 using GymManagement.BLL.ViewModels.SessionViewModels;
@@ -23,10 +24,11 @@ namespace GymManagement.BLL
             MapTrainer();
             MapPlan();
             MapBooking();
-            MapMembership();
+            MapMemberships();
         }
         private void MapMember()
         {
+            CreateMap<Member, MemberSelectListViewModel>();
             CreateMap<Member, MemberViewModel>()//sourse and destination  // create new obj from sourse , destination and assign data and return it
                 .ForMember(d => d.Address, o => o.MapFrom(s => $"{s.Address.BuildingNumber} - {s.Address.Street} - {s.Address.City}"))
                 .ForMember(d => d.DateOfBirth, o => o.MapFrom(s => s.DateofBirth.ToShortDateString())).ReverseMap();//ركزي بتاخد ايه
@@ -71,61 +73,64 @@ namespace GymManagement.BLL
             CreateMap<UpdateSessionViewModel, Session>().ReverseMap(); 
 
         }
-        private void MapTrainer()  
+        private void MapTrainer()
         {
-            //CreateMap<Trainer, TrainerViewModel>();
-            CreateMap<CreateTrainerViewModel, Trainer>().ForMember(dest => dest.Address,
-                opt => opt.MapFrom(src => new Address()
+            CreateMap<CreateTrainerViewModel, Trainer>()
+                .ForMember(dest => dest.Address, opt => opt.MapFrom(src => new Address
                 {
                     BuildingNumber = src.BuildingNumber,
                     Street = src.Street,
                     City = src.City
                 }));
-            CreateMap<Trainer, TrainerViewModel>().ForMember(d => d.Address, o => o.MapFrom(s => $"{s.Address.BuildingNumber} - {s.Address.Street} - {s.Address.City}"))
-                .ForMember(d => d.DateofBirth, o => o.MapFrom(s => s.DateofBirth.ToShortDateString())).
-                ForMember(d => d.Spectatty, o => o.MapFrom(s => s.Spectatty.ToString()))
-                .ReverseMap();//ركزي بتاخد ايه
-
-            CreateMap<CreateTrainerViewModel, Trainer>()
-       .ForMember(d => d.DateofBirth,
-           o => o.MapFrom(s => s.DateOfBirth.ToDateTime(TimeOnly.MinValue)))
-       .ForMember(d => d.Spectatty,
-           o => o.MapFrom(s => s.Spectatty))
-       .ForMember(d => d.Address,
-           o => o.MapFrom(s => new Address
-           {
-               BuildingNumber = s.BuildingNumber,
-               City = s.City,
-               Street = s.Street
-           }));
-
-
+            CreateMap<Trainer, TrainerViewModel>()
+                            .ForMember(dest => dest.Address,
+                            opt => opt.MapFrom(src => $"{src.Address.BuildingNumber} - {src.Address.Street} - {src.Address.City}"));
 
             CreateMap<Trainer, TrainerToUpdateViewModel>()
-         .ForMember(d => d.BuildingNumber, o => o.MapFrom(s => s.Address.BuildingNumber))
-         .ForMember(d => d.City, o => o.MapFrom(s => s.Address.City))
-         .ForMember(d => d.Street, o => o.MapFrom(s => s.Address.Street));
+                .ForMember(dist => dist.Street, opt => opt.MapFrom(src => src.Address.Street))
+                .ForMember(dist => dist.City, opt => opt.MapFrom(src => src.Address.City))
+                .ForMember(dist => dist.BuildingNumber, opt => opt.MapFrom(src => src.Address.BuildingNumber));
 
             CreateMap<TrainerToUpdateViewModel, Trainer>()
-                 .ForMember(dest => dest.Name, opt => opt.Ignore())
-             .AfterMap((src, dest) =>
-                 {
-                     dest.Address.BuildingNumber = src.BuildingNumber;
-                     dest.Address.Street = src.Street;
-                     dest.Address.City = src.City;
-                 });
+            .ForMember(dest => dest.Name, opt => opt.Ignore())
+          .AfterMap((src, dest) =>
+          {
+              if (dest.Address == null)
+              {
+                  dest.Address = new Address();
+              }
 
-
+              dest.Address.BuildingNumber = src.BuildingNumber;
+              dest.Address.City = src.City;
+              dest.Address.Street = src.Street;
+              dest.UpdatedAt = DateTime.Now;
+          });
         }
         private void MapPlan()      
         {
             CreateMap<Plan, PlanViewModel>().ReverseMap();
-            CreateMap<Plan,UpdatePlanViewModel>().ReverseMap();
+            CreateMap<Plan, UpdatePlanViewModel>().ReverseMap();
+                CreateMap<Plan, PlanSelectListViewModel>(); 
         }
         private void MapBooking()     { }
-        private void MapMembership() { }
+        private void MapMemberships()
+        {
+            CreateMap<Membership, MemberShipForMemberViewModel>()
+                     .ForMember(dist => dist.MemberName, Option => Option.MapFrom(Src => Src.Member.Name))
+                     .ForMember(dist => dist.PlanName, Option => Option.MapFrom(Src => Src.Plan.Name))
+                     .ForMember(dist => dist.StartDate, Option => Option.MapFrom(X => X.CreatedAt));
 
+            CreateMap<Membership, MemberShipViewModel>()
+                     .ForMember(dist => dist.MemberName, Option => Option.MapFrom(Src => Src.Member.Name))
+                     .ForMember(dist => dist.PlanName, Option => Option.MapFrom(Src => Src.Plan.Name))
+                                          .ForMember(dist => dist.StartDate, Option => Option.MapFrom(X => X.CreatedAt));
+
+            CreateMap<CreateMemberShipViewModel, Membership>();
+            CreateMap<Membership, MemberSelectListViewModel>();
+         
+        }
     }
 }
+
 
 

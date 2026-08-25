@@ -10,7 +10,7 @@ namespace GymManagement.DAL.Data.Models
         public decimal Price { get; set; }
         public bool IsActive { get; set; }
         #region Relationships
-      public ICollection<MemberShip> PlanMembers { get; set; } = default!;
+      public ICollection<Membership> PlanMembers { get; set; } = default!;
 
 
         #endregion

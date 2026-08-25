@@ -39,7 +39,7 @@ namespace GymManagement.PL.Controllers
             var result = await _membershipService.CreateMembershipAsync(model, ct);
             if (result.success)
             {
-                TempData["SuccessMessage"] = "Membership created successfully.";
+                TempData["successMessage"] = "Membership created successfully.";
                 return RedirectToAction(nameof(Index));
             }
             TempData["ErrorMessage"] = result.error;
